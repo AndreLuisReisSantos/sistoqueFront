@@ -17,7 +17,7 @@ export const Relatorio = () => {
     ]
 
     return (
-        <div>
+        <div className="Conteudo">
             <Cabecalho 
                 nomeCabecalho="Relatório"
             />

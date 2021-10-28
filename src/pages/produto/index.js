@@ -37,7 +37,7 @@ export const Produto = () => {
     ]
 
     return (
-        <div>
+        <div className="Conteudo">
             <Cabecalho 
                 nomeCabecalho="Produto"
                 links={links}

@@ -37,7 +37,7 @@ export const Usuario = () => {
     ]
 
     return (
-        <div>
+        <div className="Conteudo">
             <Cabecalho 
                 nomeCabecalho="Usuário"
                 links={links}

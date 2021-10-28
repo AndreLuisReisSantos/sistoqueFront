@@ -35,7 +35,7 @@ export const Fornecedor = () => {
     ]
 
     return (
-        <div>
+        <div className="Conteudo">
             <Cabecalho 
                 nomeCabecalho="Fornecedor"
                 links={links}

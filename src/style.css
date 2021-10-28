@@ -69,6 +69,7 @@ h3 span { background: var(--corBranca); padding:0 10px 0 0; }
   height: 100vh;
   width: 200px;
   box-shadow: var(--sombraBG);
+  position: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,6 +97,10 @@ li {
 #menu .menuSair {
   align-self: flex-end;
   margin: 20px;
+}
+
+.Conteudo{
+  margin-left: 210px;
 }
 
 .Cabecalho{
@@ -253,4 +258,26 @@ a, input[type=submit]{
 
 .swal2-confirm{
   background-color: var(--corVinho)!important;
+}
+
+table{
+  border: 1px solid var(--corBorderInput);
+  width: 760px;
+  overflow-x: auto;
+  border-collapse: collapse;
+
+}
+
+td, th{
+  padding: 10px;
+}
+
+th{
+  background-color: var(--corPreta);
+  color: var(--corBranca);
+
+}
+
+tr:nth-child(even){
+  background-color: var(--corBgInput);
 }
