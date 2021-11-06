@@ -65,7 +65,7 @@ export const inputs = [
       label: "Data de Compra",
       placeholder: "Informe a data de compra",
       value: "",
-      type: "data",
+      type: "date",
       required: false,
       classe: "input_tamanho2",
       valid : true,

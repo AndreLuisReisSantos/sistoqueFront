@@ -76,20 +76,11 @@ const renderizarCamposBuscarUsuarioReact = () =>
   return (
     <div className="Formulario">
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposBuscarUsuarioReact()}
       </fieldset>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
-      {/*<h3>
-        <span>Login e Senha</span>
-      </h3>
-      <fieldset>
-        {renderizarCamposEnderecoReact()}
-        {renderizarCamposEndereco()}
-      </fieldset>*/}
     </div>
   );
 };

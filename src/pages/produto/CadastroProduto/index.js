@@ -124,11 +124,9 @@ const CadastroProduto = () => {
     <div className="Formulario">
       <h2>Cadastrar Produto</h2>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposBuscarProdutoReact()}
       </fieldset>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
       <Botoes botoes={botoes} />

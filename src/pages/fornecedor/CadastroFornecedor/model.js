@@ -71,45 +71,65 @@ export const inputs = [
       valid : true,
       disabled : false,
     },
-    {
-      name: "representante",
-      id: "representante",
-      label: "Representante",
-      placeholder: "Representante",
-      value: "",
-      type: "text",
-      required: false,
-      classe: "input_tamanho3",
-      valid : true,
-      disabled : false,
+    ];
 
-    },
-    {
-      name: "celularRepresentante",
-      id: "celularRepresentante",
-      label: "Celular Representante",
-      placeholder: "Celular Representante",
-      value: "",
-      type: "tel",
-      required: false,
-      classe: "input_tamanho3",
-      valid : true,
-      disabled : false,
+export const selectRepresentante = [
+  {
+    name: "selecionarRepresentante",
+    id: "selecionarRepresentante",
+    label: "Selecione um Representante",
+    placeholder: "Selecione um Representante",
+    value: "",
+    type: "select",
+    required: false,
+    classe: "input_tamanho2",
+    valid : true,
+    disabled : false,
 
-    },
-    {
-      name: "emailRepresentante",
-      id: "emailRepresentante",
-      label: "Email Representante",
-      placeholder: "Email Representante",
-      value: "",
-      type: "email",
-      required: true,
-      classe: "input_tamanho3",
-      valid : true,
-      disabled : false,
+  },
+]
 
-    },];
+export const inputsRepresentante = [
+  {
+    name: "representante",
+    id: "representante",
+    label: "Representante",
+    placeholder: "Representante",
+    value: "",
+    type: "text",
+    required: false,
+    classe: "input_tamanho3",
+    valid : true,
+    disabled : false,
+
+  },
+  {
+    name: "celularRepresentante",
+    id: "celularRepresentante",
+    label: "Celular Representante",
+    placeholder: "Celular Representante",
+    value: "",
+    type: "tel",
+    required: false,
+    classe: "input_tamanho3",
+    valid : true,
+    disabled : false,
+
+  },
+  {
+    name: "emailRepresentante",
+    id: "emailRepresentante",
+    label: "Email Representante",
+    placeholder: "Email Representante",
+    value: "",
+    type: "email",
+    required: true,
+    classe: "input_tamanho3",
+    valid : true,
+    disabled : false,
+
+  },
+]
 
 export const inputsEndereco = [
     {

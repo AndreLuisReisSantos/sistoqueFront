@@ -9,7 +9,7 @@ export const inputs = [
       required: true,
       classe: "input_tamanho5",
       valid : true,
-      disabled : false,
+      disabled : true,
     },
     {
       name: "categoria",
@@ -21,7 +21,7 @@ export const inputs = [
       required: true,
       classe: "input_tamanho3",
       valid : true,
-      disabled : false,
+      disabled : true,
       options: []
     },
     {
@@ -34,7 +34,7 @@ export const inputs = [
       required: true,
       classe: "input_tamanho2",
       valid : true,
-      disabled : false,    
+      disabled : true,    
     },{
       name: "localArmazenamento",
       id: "localArmazenamento",
@@ -45,7 +45,7 @@ export const inputs = [
       required: true,
       classe: "input_tamanho2",
       valid : true,
-      disabled : false,    
+      disabled : true,   
     },{
       name: "descricaoProduto",
       id: "descricaoProduto",
@@ -56,7 +56,7 @@ export const inputs = [
       required: true,
       classe: "input_tamanho1",
       valid : true,
-      disabled : false,
+      disabled : true,
     },];
 
 export const buscarProduto = [

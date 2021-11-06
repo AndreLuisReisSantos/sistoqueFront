@@ -4,6 +4,24 @@ import { useState } from "react";
 
 const ConsultarEstoque = () =>{
 
+  const botoes = [
+    {
+      nome: "Nova Consulta",
+      classe: "botaoCadastrar",
+      //onClick: (e) => confirmarCamposReact(e),
+    } /*
+  {
+    nome:"Excluir",
+    classe:"botaoExcluir",
+    onClick: () => excluirCampos(),
+  },,
+    {
+      nome: "Limpar",
+      classe: "botaoLimpar",
+      onClick: (e) => limparCamposReact(e),
+    },*/
+  ];
+
     const [inputsReact, setInputReact] = useState(inputs);
 
     const mudarValueInput = (e, input) => {
@@ -39,34 +57,6 @@ const ConsultarEstoque = () =>{
               }
           </div>
       ));
-      /*
-      const renderizarProdutosNoEstoqueReact = () => 
-      inputsTabela.map((inputsTabelaAtual) => (
-      <div className="itemFormulario">
-              <table>
-              <tr>
-              {
-                  inputsTabelaAtual.tipo == "titulo" (
-                  
-                    <th>{inputsTabelaAtual.titulo}</th>
-                    
-                  
-                  )
-                }
-              </tr>
-              <tr>
-                    <td>Nome do Produto</td>
-                    <td>Quantidade</td>
-                    <td>Volume</td>
-                    <td>Validade</td>
-                    <td>Preço</td>
-                    <td>Local Armazenamento</td>
-                    <td>Vencido</td>
-              </tr>
-              </table>
-          </div>
-      ));
-*/
 const renderizarProdutosNoEstoqueReact = () => 
 <div className="itemFormulario">
         <table>
@@ -101,6 +91,7 @@ const renderizarProdutosNoEstoqueReact = () =>
             <fieldset>
                 {renderizarProdutosNoEstoqueReact()}
             </fieldset>
+            <Botoes botoes={botoes} />
         </div>
     )
 }

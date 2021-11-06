@@ -1,5 +1,5 @@
 import Botoes from "../../../components/Botoes";
-import { inputs, inputsEndereco } from "./model";
+import { inputs, inputsEndereco, inputsRepresentante, selectRepresentante } from "./model";
 import { useState } from "react";
 
 const CadastroFornecedor = () => {
@@ -20,8 +20,12 @@ const CadastroFornecedor = () => {
       onClick: (e) => limparCamposReact(e),
     },
   ];
+
   const [inputsReact, setInputReact] = useState(inputs);
   const [inputsEnderecoReact, setInputEnderecoReact] = useState(inputsEndereco);
+  const [inputsRepresentanteReact, setInputRepresentanteReact] = useState(inputsRepresentante);
+  const [selectRepresentanteReact, setSelectRepresentanteReact] = useState(selectRepresentante);
+  const [deveMostrarFormularioDoRepresentante, setDeveMostrarFormularioDoRepresentante ] = useState(false);
 
   const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
@@ -39,6 +43,7 @@ const CadastroFornecedor = () => {
       <div className="itemFormulario" key={inputAtual.id}>
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
+        {
         <input
           placeholder={inputAtual.placeholder}
           name={inputAtual.name}
@@ -53,6 +58,74 @@ const CadastroFornecedor = () => {
           }}
           style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
         />
+        }
+      </div>
+    ));
+
+const mudarValueInputRepresentante = (e, input) => {
+      const htmlInputs = e.target;
+      input.value = htmlInputs.value;
+      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
+        if (inputsReactAtual.id == input.id) return input;
+        else return inputsReactAtual;
+      });
+      setInputReact(inputsAtualizados)
+    };
+
+const renderizarCamposRepresentanteReact = () =>
+    inputsRepresentanteReact.map((inputRepresentanteAtual) => (
+      <div className="itemFormulario" key={inputRepresentanteAtual.id}>
+        <label for={inputRepresentanteAtual.name}>{inputRepresentanteAtual.label}:</label>
+        <br />
+        {       
+        <input
+          placeholder={inputRepresentanteAtual.placeholder}
+          name={inputRepresentanteAtual.name}
+          id={inputRepresentanteAtual.id}
+          type={inputRepresentanteAtual.type}
+          required={inputRepresentanteAtual.required}
+          value={inputRepresentanteAtual.value}
+          disabled={inputRepresentanteAtual.disabled}
+          className={inputRepresentanteAtual.classe}
+          onChange={(e) => {
+            mudarValueInput(e, inputRepresentanteAtual)
+          }}
+          style={{ border: !inputRepresentanteAtual.valid ? '1px solid red' : '', backgroundColor:!inputRepresentanteAtual.valid ? '#FFC0CB' : ''}}
+        /> 
+          }
+      </div>
+    ));
+
+const mudarValueSelectRepresentante = (e, input) => {
+      const htmlInputs = e.target;
+      input.value = htmlInputs.value;
+      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
+        if (inputsReactAtual.id == input.id) return input;
+        else return inputsReactAtual;
+      });
+      setInputReact(inputsAtualizados)
+    };
+
+const renderizarCamposSelecionarRepresentanteReact = () =>
+  selectRepresentanteReact.map((selectRepresentanteAtual) => (
+      <div className="itemFormulario" key={selectRepresentanteAtual.id}>
+        <label for={selectRepresentanteAtual.name}>{selectRepresentanteAtual.label}:</label>
+        <br />
+          {
+          <select
+              placeholder={selectRepresentanteAtual.placeholder}
+              name={selectRepresentanteAtual.name}
+              id={selectRepresentanteAtual.id}
+              required={selectRepresentanteAtual.required}
+              value={selectRepresentanteAtual.value}
+              disabled={selectRepresentanteAtual.disabled}
+              className={selectRepresentanteAtual.classe}
+              onChange={(e) => {mudarValueInput(e, selectRepresentanteAtual)}}
+              style={{ border: !selectRepresentanteAtual.valid ? '1px solid red' : '', backgroundColor:!selectRepresentanteAtual.valid ? '#FFC0CB' : ''}}
+            > {
+              (selectRepresentanteAtual.options || []).map((option) => (<option value={option.value}> {option.text} </option>))
+            }</select>
+          } <button className="botaoCadastrar" onClick={() => setDeveMostrarFormularioDoRepresentante(true) }>Cadastrar Novo</button>
       </div>
     ));
 
@@ -118,9 +191,12 @@ const CadastroFornecedor = () => {
       e.preventDefault();
       const camposAtualizados = inputsReact.map((input) => ({...input, value : ''}))
       const camposEnderecoAtualizados = inputsEnderecoReact.map((input) => ({...input, value : ''}))
+      const camposRepresentanteAtualizados = inputsRepresentanteReact.map((input) => ({...input, value : ''}))
 
       setInputReact(camposAtualizados)
       setInputEnderecoReact(camposEnderecoAtualizados)
+      setInputRepresentanteReact(camposRepresentanteAtualizados)
+
 
     }
 
@@ -130,25 +206,38 @@ const CadastroFornecedor = () => {
       setInputReact(validarCampos)
       const validarEnderecoCampos = inputsEnderecoReact.map((input) => ({...input, valid: input.required ? input.value !== '' : true}))
       setInputEnderecoReact(validarEnderecoCampos)
+      const validarRepresentanteCampos = inputsRepresentanteReact.map((input) => ({...input, valid: input.required ? input.value !== '' : true}))
+      setInputRepresentanteReact(validarRepresentanteCampos)
+
     }
 
   return (
     <div className="Formulario">
       <h2>Cadastrar novo Fornecedor</h2>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
+      <h3>
+        <span>Representante</span>
+      </h3>
+      <fieldset>
+        {renderizarCamposSelecionarRepresentanteReact()}
+      </fieldset>
+      {deveMostrarFormularioDoRepresentante && (
+        <fieldset>
+          {renderizarCamposRepresentanteReact()}
+        </fieldset>
+      )}
       <h3>
         <span>Endereço</span>
       </h3>
       <fieldset>
         {renderizarCamposEnderecoReact()}
-        {/*renderizarCamposEndereco()*/}
       </fieldset>
       <Botoes botoes={botoes} />
     </div>
   );
 };
+
 
 export default CadastroFornecedor;
