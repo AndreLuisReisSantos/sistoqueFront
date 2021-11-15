@@ -25,7 +25,7 @@ export const inputs = [
   },
   {
     name: "CNPJ",
-    id: "CNPJ",
+    id: "cnpj",
     label: "CNPJ",
     placeholder: "CNPJ",
     value: "",
@@ -79,42 +79,43 @@ export const inputs = [
     value: "",
     type: "text",
     required: false,
-    classe: "input_tamanho3",
+    classe: "input_tamanho2",
     valid : true,
     disabled : true,
 
   },
   {
-    name: "celularRepresentante",
-    id: "celularRepresentante",
+    name: "celular_representante",
+    id: "celular_representante",
     label: "Celular Representante",
     placeholder: "Celular Representante",
     value: "",
     type: "tel",
     required: false,
-    classe: "input_tamanho3",
+    classe: "input_tamanho2",
     valid : true,
     disabled : true,
 
   },
-  {
-    name: "emailRepresentante",
-    id: "emailRepresentante",
-    label: "Email Representante",
-    placeholder: "Email Representante",
-    value: "",
-    type: "email",
-    required: true,
-    classe: "input_tamanho3",
-    valid : true,
-    disabled : true,
+  // {
+  //   name: "email_representante",
+  //   id: "email_representante",
+  //   label: "Email Representante",
+  //   placeholder: "Email Representante",
+  //   value: "",
+  //   type: "email",
+  //   required: true,
+  //   classe: "input_tamanho3",
+  //   valid : true,
+  //   disabled : true,
 
-  },];
+  // },
+];
 
 export const inputsEndereco = [
   {
-    name: "CEP",
-    id: "CEP",
+    name: "cep",
+    id: "cep",
     label: "CEP",
     placeholder: "CEP",
     value: "",
@@ -126,8 +127,8 @@ export const inputsEndereco = [
 
   },
   {
-    name: "nomeLogradouro",
-    id: "nomeLogradouro",
+    name: "logradouro",
+    id: "logradouro",
     label: "Nome da Rua / Avenida",
     placeholder: "Nome da Rua / Avenida",
     value: "",

@@ -24,8 +24,8 @@ export const inputs = [
       disabled : true,
     },
     {
-      name: "CNPJ",
-      id: "CNPJ",
+      name: "cnpj",
+      id: "cnpj",
       label: "CNPJ",
       placeholder: "CNPJ",
       value: "",

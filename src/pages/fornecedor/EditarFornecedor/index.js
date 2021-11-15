@@ -1,6 +1,10 @@
 import Botoes from "../../../components/Botoes";
-import { inputs, inputsEndereco, buscarFornecedor } from "./model";
+import { SelectFornecedor, TODOS_FORNECEDORES } from "../../../components/SelectFornecedor"
+import { inputs, inputsEndereco } from "./model";
 import { useState } from "react";
+import Swal from 'sweetalert2'
+import { useMutation } from '@apollo/client';
+import { EDITAR_FORNECEDOR } from "../../../mutation/editarFornecedor";
 
 const EditarFornecedor = () => {
   const botoes = [
@@ -11,22 +15,26 @@ const EditarFornecedor = () => {
     } 
   ];
 
-  const [inputsReact, setInputReact] = useState(inputs);
-  const [inputsEnderecoReact, setInputEnderecoReact] = useState(inputsEndereco);
-
+  const [fornecedorFields, setFornecedorFields] = useState(inputs);
+  const [enderecoFields, setEnderecoFields] = useState(inputsEndereco);
+  const [editarFornecedor, { data, error }] = useMutation(EDITAR_FORNECEDOR, {
+    refetchQueries: [
+      { query: TODOS_FORNECEDORES}
+    ]
+  })
+  const [ fornecedorId, setFornecedorId] = useState(null)
   const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
-    const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
+    const inputsAtualizados = fornecedorFields.map((inputsReactAtual) => {
       if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
-    console.log("chamou")
-    setInputReact(inputsAtualizados)
+    setFornecedorFields(inputsAtualizados)
   };
 
   const renderizarCamposReact = () =>
-    inputsReact.map((inputAtual) => (
+    fornecedorFields.map((inputAtual) => (
       <div className="itemFormulario">
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
@@ -47,11 +55,11 @@ const EditarFornecedor = () => {
   const mudarValueInputEndereco = (e, input) => {
       const htmlInputs = e.target;
       input.value = htmlInputs.value;
-      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
+      const inputsAtualizados = enderecoFields.map((inputsReactAtual) => {
         if (inputsReactAtual.id === input.id) return input;
         else return inputsReactAtual;
       });
-      setInputEnderecoReact(inputsAtualizados)
+      setEnderecoFields(inputsAtualizados)
     };
 
 const buscarCep = async (cep) => {
@@ -63,20 +71,18 @@ const buscarCep = async (cep) => {
         const retornoViaCep = 
         await fetch("https://viacep.com.br/ws/" + cep + "/json/")
         const jsonViaCep = await retornoViaCep.json()
-        const enderecoCompleto = inputsEnderecoReact.map((input) => (
-          {
+        const enderecoCompleto = enderecoFields.map((input) => ({
             ...input,
             value: jsonViaCep[input.name] || ""
-          }
-        ))
-        setInputEnderecoReact(enderecoCompleto);
+          }))
+          setEnderecoFields(enderecoCompleto);
       } catch (e) {
         console.log(e);
       }
     }
 
   const renderizarCamposEnderecoReact = () =>
-    inputsEndereco.map((inputEnderecoAtual) => (
+    enderecoFields.map((inputEnderecoAtual) => (
       <div className="itemFormulario" key={inputEnderecoAtual.id}>
         <label for={inputEnderecoAtual.name}>{inputEnderecoAtual.label}:</label>
         <br />
@@ -101,42 +107,112 @@ const buscarCep = async (cep) => {
       </div>
     ));
 
-    const renderizarCamposBuscarFornecedorReact = () =>
-      buscarFornecedor.map((BuscarFornecedorAtual) => (
-        <div className="itemFormulario">
-          <label for={BuscarFornecedorAtual.name}>{BuscarFornecedorAtual.label}:</label>
-          <br />
-          <select
-            placeholder={BuscarFornecedorAtual.placeholder}
-            name={BuscarFornecedorAtual.name}
-            id={BuscarFornecedorAtual.id}
-            required={BuscarFornecedorAtual.required}
-            value={BuscarFornecedorAtual.value}
-            className={BuscarFornecedorAtual.classe}
-            disabled={BuscarFornecedorAtual.disabled}
-  
-          />
-        </div>
-      ));
+    const confirmarCamposReact = async (e) => {
+      if(!fornecedorId) {
+        return Swal.fire({
+          title: "Ops!",
+          text: "Por favor selecione o fornecedor que deseja editar",
+          icon: "error"
+        })
+      }
+      const validarCampos = fornecedorFields.map((input) => ({...input, valid: input.required ? input.value !== '' : true}))
+      setFornecedorFields(validarCampos)
+      const validarEnderecoCampos = enderecoFields.map((input) => ({...input, valid: input.required ? input.value !== '' : true }))
+      setEnderecoFields(validarEnderecoCampos)
 
-    const confirmarCamposReact = (e) => {
-      e.preventDefault();
-      const validarCampos = inputsReact.map((input) => ({...input, valid: input.required ? input.value !== '' : true}))
-      setInputReact(validarCampos)
-      const validarEnderecoCampos = inputsEnderecoReact.map((input) => ({...input, valid: input.required ? input.value !== '' : true }))
-      setInputEnderecoReact(validarEnderecoCampos)
+      const isAllFieldsValid = validarCampos.every((input) => input.valid) 
+        && validarEnderecoCampos.every((input) => input.valid)
 
+
+
+      if(!isAllFieldsValid) {
+        return Swal.fire({
+          title: "Ops!",
+          text: "Por favor preencha todos os campos obrigatórios",
+          icon: "error"
+        })
+      }
+      const fieldsValue = {
+        ...fornecedorFields.reduce((formatedValue, input) => ({
+          ...formatedValue,
+          [input.id]: input.value
+        }), {}),
+        ...enderecoFields.reduce((formatedValue, input) => ({
+          ...formatedValue,
+          [input.id]: input.value
+        }), {})
+      }
+
+      delete fieldsValue.representante
+      delete fieldsValue.celular_representante
+
+      try {
+        await editarFornecedor({
+          variables: {
+            fornecedorId: Number(fornecedorId),
+            fornecedor: fieldsValue
+          }
+        })
+        
+        Swal.fire({
+          title: 'Parabens!',
+          text: 'Fornecedor editado!',
+          icon: 'success'
+        })
+        
+        
+      
+
+      } catch( errors ) {
+        
+        return Swal.fire({
+          title: 'Ops!',
+          text: error ? error.message : errors.message || errors[0].message,
+          icon: 'error'
+        })
+      
+      }
     }
+
+    const setFornecedorInfo = (fornecedor) => {
+
+      if(!fornecedor) {
+        setFornecedorId(null)
+        setFornecedorFields(inputs)
+        setEnderecoFields(inputsEndereco)
+        return 
+      }
+      setFornecedorId(Number(fornecedor.id))
+      setEnderecoFields(
+        enderecoFields.map((field) => ({
+          ...field,
+          value: fornecedor[field.id] || '',
+          disabled: false,
+        }))
+      )
+  
+      setFornecedorFields(
+        fornecedorFields.map(
+          (field) => ({
+            ...field,
+            value: fornecedor[field.id] || '',
+            disabled: false,
+          })))
+      
+    }
+
+
+
 
   return (
     <div className="Formulario">
       <h2>Editar Fornecedor</h2>
       <fieldset>
-        {/*renderizarCampos()*/}
-        {renderizarCamposBuscarFornecedorReact()}
+        <SelectFornecedor
+          onSelectFornecedor={setFornecedorInfo}
+        />
       </fieldset>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
       <h3>
@@ -144,7 +220,6 @@ const buscarCep = async (cep) => {
       </h3>
       <fieldset>
         {renderizarCamposEnderecoReact()}
-        {/*renderizarCamposEndereco()*/}
       </fieldset>
       <Botoes botoes={botoes} />
     </div>

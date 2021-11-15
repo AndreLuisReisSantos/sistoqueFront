@@ -1,35 +1,30 @@
-import Botoes from "../../../components/Botoes";
-import { inputs, buscarFornecedor } from "./model";
+
+
 import { useState } from "react";
 import Swal from 'sweetalert2';
+import { useMutation } from '@apollo/client';
+import { SelectFornecedor, TODOS_FORNECEDORES } from "../../../components/SelectFornecedor";
+import Botoes from "../../../components/Botoes";
+import { DELETAR_FORNECEDOR } from './../../../mutation/deletarFornecedor';
+import { inputs } from "./model";
 
 const ExcluirFornecedor = () => {
+  
+  const [fornecedorFields, setFornecedorFields] = useState(inputs);
+  const [fornecedorId, setFornecedorId] = useState(null)
+  const [deletarFornecedor, { error }] = useMutation(DELETAR_FORNECEDOR, {
+    refetchQueries: [{ query: TODOS_FORNECEDORES }]
+  })
   const botoes = [
-
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: (e) => excluirFornecedor(e)
-  },
-    
+    {
+      nome:"Excluir",
+      classe:"botaoExcluir",
+      onClick: (e) => excluirFornecedor(e)
+    },
   ];
 
-const [inputsReact, setInputReact] = useState(inputs);
-const [buscarFornecedorReact] = useState(buscarFornecedor);
-
-
-const mudarValueInput = (e, input) => {
-    const htmlInputs = e.target;
-    input.value = htmlInputs.value;
-    const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id === input.id) return input;
-      else return inputsReactAtual;
-    });
-    setInputReact(inputsAtualizados)
-  };
-
-  const renderizarCamposReact = () =>
-    inputsReact.map((inputAtual) => (
+  const renderizarFornecedorFields = () =>
+    fornecedorFields.map((inputAtual) => (
       <div className="itemFormulario" key={inputAtual.id}>
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
@@ -42,47 +37,74 @@ const mudarValueInput = (e, input) => {
           value={inputAtual.value}
           className={inputAtual.classe}
           disabled={inputAtual.disabled}
-          onChange={(e) => mudarValueInput(e, inputAtual)}
+          onChange={(e) => setFornecedorFields(e, inputAtual)}
         />
       </div>
     ));
 
-const renderizarCamposBuscarFornecedorReact = () =>
-buscarFornecedorReact.map((BuscarFornecedorAtual) => (
-        <div className="itemFormulario">
-          <label for={BuscarFornecedorAtual.name}>{BuscarFornecedorAtual.label}:</label>
-          <br />
-          <select
-            placeholder={BuscarFornecedorAtual.placeholder}
-            name={BuscarFornecedorAtual.name}
-            id={BuscarFornecedorAtual.id}
-            required={BuscarFornecedorAtual.required}
-            value={BuscarFornecedorAtual.value}
-            className={BuscarFornecedorAtual.classe}
-            disabled={BuscarFornecedorAtual.disabled}
-            style={{ border: !BuscarFornecedorAtual.valid ? '1px solid red' : '', backgroundColor:!BuscarFornecedorAtual.valid ? '#FFC0CB' : ''}}
-          />
-        </div>
-      ));
 
-  const excluirFornecedor = (e) =>  {
-    e.preventDefault();
-    Swal.fire({
-      title: "O fornecedor foi excluido",
-      icon: "success"
-    })
+  const excluirFornecedor = async () =>  {
+    
+    if(!fornecedorId) {
+      Swal.fire({
+        title: "Ops!",
+        text: "Por favor, selecione o fornecedor que deseja excluir",
+        icon: "warning"
+      })
+      return
+    }
+
+
+    try {
+      await deletarFornecedor({
+        variables: {
+          fornecedorId
+        }
+      })
+
+      setFornecedorInfo(null)
+      return Swal.fire({
+        title: "Parabéns!",
+        text: "O fornecedor foi excluido",
+        icon: "success"
+      })
+    } catch( errors ) {
+      return Swal.fire({
+        title: 'Ops!',
+        text: error ? error.message : errors.message || errors[0].message,
+        icon: 'error'
+      })
+    }
+    
+
+    
+  }
+
+  const setFornecedorInfo = (fornecedor) => {
+
+    if(!fornecedor) {
+      setFornecedorFields(inputs)
+      setFornecedorId(null)
+      return 
+    }
+    setFornecedorId(Number(fornecedor.id))
+    setFornecedorFields(
+      fornecedorFields.map(
+        (field) => ({
+          ...field,
+          value: fornecedor[field.id] || ''
+        }))
+      )
   }
 
   return (
     <div className="Formulario">
       <h2>Excluir Fornecedor</h2>
       <fieldset>
-        {renderizarCamposBuscarFornecedorReact()}
-        {/*renderizarCamposEndereco()*/}
+        <SelectFornecedor onSelectFornecedor={setFornecedorInfo}></SelectFornecedor>
       </fieldset>
       <fieldset>
-        {/*renderizarCampos()*/}
-        {renderizarCamposReact()}
+        {renderizarFornecedorFields()}
       </fieldset>
       <Botoes botoes={botoes} />
     </div>

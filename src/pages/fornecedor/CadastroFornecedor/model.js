@@ -24,8 +24,8 @@ export const inputs = [
       disabled : false,
     },
     {
-      name: "CNPJ",
-      id: "CNPJ",
+      name: "cnpj",
+      id: "cnpj",
       label: "CNPJ",
       placeholder: "CNPJ",
       value: "",
@@ -134,7 +134,7 @@ export const inputsRepresentante = [
 export const inputsEndereco = [
     {
       name: "cep",
-      id: "CEP",
+      id: "cep",
       label: "CEP",
       placeholder: "CEP",
       value: "",
@@ -147,7 +147,7 @@ export const inputsEndereco = [
     },
     {
       name: "logradouro",
-      id: "nomeLogradouro",
+      id: "logradouro",
       label: "Nome da Rua / Avenida",
       placeholder: "Nome da Rua / Avenida",
       value: "",
