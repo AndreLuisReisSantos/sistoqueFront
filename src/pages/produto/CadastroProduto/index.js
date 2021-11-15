@@ -8,12 +8,7 @@ const CadastroProduto = () => {
       nome: "Cadastrar",
       classe: "botaoCadastrar",
       onClick: (e) => confirmarCamposReact(e),
-    } /*
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: () => excluirCampos(),
-  },*/,
+    } ,
     {
       nome: "Limpar",
       classe: "botaoLimpar",
@@ -27,7 +22,7 @@ const CadastroProduto = () => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)
@@ -39,7 +34,7 @@ const CadastroProduto = () => {
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
         {
-          inputAtual.type != 'select' && inputAtual.type != "textarea" ? (
+          inputAtual.type !== 'select' && inputAtual.type !== "textarea" ? (
             <input
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -55,7 +50,7 @@ const CadastroProduto = () => {
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             />
           ) :
-            inputAtual.type == "textarea"   ? (
+            inputAtual.type === "textarea"   ? (
               <textarea 
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}

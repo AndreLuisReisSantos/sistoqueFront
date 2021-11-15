@@ -17,7 +17,7 @@ const ExcluirProduto = () => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)
@@ -29,7 +29,7 @@ const ExcluirProduto = () => {
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
         {
-          inputAtual.type != 'select' && inputAtual.type != "textarea" ? (
+          inputAtual.type !== 'select' && inputAtual.type !== "textarea" ? (
             <input
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -45,7 +45,7 @@ const ExcluirProduto = () => {
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             />
           ) :
-            inputAtual.type == "textarea"   ? (
+            inputAtual.type === "textarea"   ? (
               <textarea 
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}

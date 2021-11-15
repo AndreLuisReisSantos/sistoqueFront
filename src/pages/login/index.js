@@ -12,7 +12,7 @@ export const Login = () => {
         const email = document.querySelector("#txt_email").value
         const password = document.querySelector("#txt_password").value
 
-        if(email == '' || password == '') {
+        if(email === '' || password === '') {
             
             Swal.fire({
                 title: 'Preencha os campos',

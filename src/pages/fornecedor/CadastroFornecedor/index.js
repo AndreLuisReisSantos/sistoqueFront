@@ -8,12 +8,7 @@ const CadastroFornecedor = () => {
       nome: "Cadastrar",
       classe: "botaoCadastrar",
       onClick: (e) => confirmarCamposReact(e),
-    } /*
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: () => excluirCampos(),
-  },*/,
+    },
     {
       nome: "Limpar",
       classe: "botaoLimpar",
@@ -24,14 +19,14 @@ const CadastroFornecedor = () => {
   const [inputsReact, setInputReact] = useState(inputs);
   const [inputsEnderecoReact, setInputEnderecoReact] = useState(inputsEndereco);
   const [inputsRepresentanteReact, setInputRepresentanteReact] = useState(inputsRepresentante);
-  const [selectRepresentanteReact, setSelectRepresentanteReact] = useState(selectRepresentante);
+  const [selectRepresentanteReact] = useState(selectRepresentante);
   const [deveMostrarFormularioDoRepresentante, setDeveMostrarFormularioDoRepresentante ] = useState(false);
 
   const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     console.log("chamou")
@@ -62,15 +57,6 @@ const CadastroFornecedor = () => {
       </div>
     ));
 
-const mudarValueInputRepresentante = (e, input) => {
-      const htmlInputs = e.target;
-      input.value = htmlInputs.value;
-      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-        if (inputsReactAtual.id == input.id) return input;
-        else return inputsReactAtual;
-      });
-      setInputReact(inputsAtualizados)
-    };
 
 const renderizarCamposRepresentanteReact = () =>
     inputsRepresentanteReact.map((inputRepresentanteAtual) => (
@@ -95,16 +81,6 @@ const renderizarCamposRepresentanteReact = () =>
           }
       </div>
     ));
-
-const mudarValueSelectRepresentante = (e, input) => {
-      const htmlInputs = e.target;
-      input.value = htmlInputs.value;
-      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-        if (inputsReactAtual.id == input.id) return input;
-        else return inputsReactAtual;
-      });
-      setInputReact(inputsAtualizados)
-    };
 
 const renderizarCamposSelecionarRepresentanteReact = () =>
   selectRepresentanteReact.map((selectRepresentanteAtual) => (
@@ -133,7 +109,7 @@ const renderizarCamposSelecionarRepresentanteReact = () =>
       const htmlInputs = e.target;
       input.value = htmlInputs.value;
       const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-        if (inputsReactAtual.id == input.id) return input;
+        if (inputsReactAtual.id === input.id) return input;
         else return inputsReactAtual;
       });
       setInputReact(inputsAtualizados)
@@ -141,7 +117,7 @@ const renderizarCamposSelecionarRepresentanteReact = () =>
 
   const buscarCep = async (cep) => {
 
-    if(cep == '' || cep.length < 8 || cep.length > 9) {
+    if(cep === '' || cep.length < 8 || cep.length > 9) {
       return 
     }
     try {
@@ -177,7 +153,7 @@ const renderizarCamposSelecionarRepresentanteReact = () =>
           width={inputEnderecoAtual.tamanho}
           onChange={(e) => {
             mudarValueInputEndereco(e, inputEnderecoAtual)
-            if(inputEnderecoAtual.name == 'cep') {
+            if(inputEnderecoAtual.name === 'cep') {
               buscarCep(inputEnderecoAtual.value)
             }
           }}

@@ -1,5 +1,4 @@
 import { inputs, buscarUsuario } from "./model";
-import Botoes from '../../../components/Botoes';
 import { useState } from "react";
 
 const ConsultarUsuario = () => {
@@ -10,7 +9,7 @@ const ConsultarUsuario = () => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)
@@ -21,7 +20,7 @@ const ConsultarUsuario = () => {
       <div className="itemFormulario">
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />{
-          inputAtual.type != 'select' ? (
+          inputAtual.type !== 'select' ? (
             <input
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}

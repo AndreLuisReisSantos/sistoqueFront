@@ -1,4 +1,4 @@
-import { inputs, inputsTabela } from "./model";
+import { inputs } from "./model";
 import Botoes from "../../../components/Botoes";
 import { useState } from "react";
 
@@ -28,7 +28,7 @@ const ConsultarEstoque = () =>{
         const htmlInputs = e.target;
         input.value = htmlInputs.value;
         const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-          if (inputsReactAtual.id == input.id) return input;
+          if (inputsReactAtual.id === input.id) return input;
           else return inputsReactAtual;
         });
         setInputReact(inputsAtualizados)

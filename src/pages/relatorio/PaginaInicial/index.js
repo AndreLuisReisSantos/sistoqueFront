@@ -1,5 +1,5 @@
 import Botoes from "../../../components/Botoes";
-import { inputs, inputsEndereco, buscarRelatorio } from "./model";
+import { inputs, buscarRelatorio } from "./model";
 import { useState } from "react";
 
 const ConsultarRelatorio = () => {
@@ -9,12 +9,7 @@ const ConsultarRelatorio = () => {
           nome: "Baixar",
           classe: "botaoCadastrar",
           onClick: (e) => confirmarCamposReact(e),
-        } /*
-      {
-        nome:"Excluir",
-        classe:"botaoExcluir",
-        onClick: () => excluirCampos(),
-      },*/,
+        },
         {
           nome: "Limpar",
           classe: "botaoLimpar",
@@ -29,7 +24,7 @@ const mudarValueInput = (e, input) => {
   const htmlInputs = e.target;
   input.value = htmlInputs.value;
   const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-    if (inputsReactAtual.id == input.id) return input;
+    if (inputsReactAtual.id === input.id) return input;
     else return inputsReactAtual;
   });
   console.log("chamou")

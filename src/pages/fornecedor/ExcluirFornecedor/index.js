@@ -15,14 +15,14 @@ const ExcluirFornecedor = () => {
   ];
 
 const [inputsReact, setInputReact] = useState(inputs);
-const [buscarFornecedorReact, setInputbuscarFornecedorReact] = useState(buscarFornecedor);
+const [buscarFornecedorReact] = useState(buscarFornecedor);
 
 
 const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)

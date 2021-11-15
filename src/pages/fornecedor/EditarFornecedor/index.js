@@ -8,17 +8,7 @@ const EditarFornecedor = () => {
       nome: "Confirmar",
       classe: "botaoCadastrar",
       onClick: (e) => confirmarCamposReact(e),
-    } /*
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: () => excluirCampos(),
-  },,
-    {
-      nome: "Limpar",
-      classe: "botaoLimpar",
-      onClick: (e) => limparCamposReact(e),
-    }*/,
+    } 
   ];
 
   const [inputsReact, setInputReact] = useState(inputs);
@@ -28,7 +18,7 @@ const EditarFornecedor = () => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     console.log("chamou")
@@ -58,7 +48,7 @@ const EditarFornecedor = () => {
       const htmlInputs = e.target;
       input.value = htmlInputs.value;
       const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-        if (inputsReactAtual.id == input.id) return input;
+        if (inputsReactAtual.id === input.id) return input;
         else return inputsReactAtual;
       });
       setInputEnderecoReact(inputsAtualizados)
@@ -66,7 +56,7 @@ const EditarFornecedor = () => {
 
 const buscarCep = async (cep) => {
 
-      if(cep == '' || cep.length < 8 || cep.length > 9) {
+      if(cep === '' || cep.length < 8 || cep.length > 9) {
         return 
       }
       try {
@@ -101,7 +91,7 @@ const buscarCep = async (cep) => {
           className={inputEnderecoAtual.classe}
           onChange={(e) => {
             mudarValueInputEndereco(e, inputEnderecoAtual)
-            if(inputEnderecoAtual.name == 'cep') {
+            if(inputEnderecoAtual.name === 'cep') {
               buscarCep(inputEnderecoAtual.value)
             }
           }}

@@ -27,7 +27,7 @@ const ExcluirUsuario = () => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)
@@ -39,7 +39,7 @@ const ExcluirUsuario = () => {
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
         {
-          inputAtual.type != 'select' ? (
+          inputAtual.type !== 'select' ? (
             <input
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}

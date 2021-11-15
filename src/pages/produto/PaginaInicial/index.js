@@ -1,5 +1,4 @@
 import { inputs, buscarProduto } from "./model";
-import Botoes from '../../../components/Botoes';
 import { useState } from "react";
 
 const ConsultarProduto = () => {
@@ -10,7 +9,7 @@ const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
     const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id == input.id) return input;
+      if (inputsReactAtual.id === input.id) return input;
       else return inputsReactAtual;
     });
     setInputReact(inputsAtualizados)
@@ -22,7 +21,7 @@ const renderizarCamposReact = () =>
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
         {
-          inputAtual.type != 'select' && inputAtual.type != "textarea" ? (
+          inputAtual.type !== 'select' && inputAtual.type !== "textarea" ? (
             <input
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -38,7 +37,7 @@ const renderizarCamposReact = () =>
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             />
           ) : 
-          inputAtual.type == 'textarea' ? (
+          inputAtual.type === 'textarea' ? (
             <textarea 
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -71,8 +70,8 @@ const renderizarCamposReact = () =>
         }
       </div>
     ));
-console.log({ buscarProduto })
-const renderizarCamposBuscarProdutoReact = () =>
+
+    const renderizarCamposBuscarProdutoReact = () =>
       (buscarProduto || []).map((BuscarProdutoAtual) => (
         <div className="itemFormulario">
           <label for={BuscarProdutoAtual.name}>{BuscarProdutoAtual.label}:</label>
