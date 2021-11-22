@@ -21,11 +21,11 @@ const MenuPrincipal = () => {
             <span className="icon-Estoque">Estoque</span>
             </Link>
             </li>
-            <li>
+            {/* <li>
             <Link to="/sistema/receita/PaginaInicial">
             <span className="icon-Receitas">Receita</span>
             </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/sistema/fornecedor/PaginaInicial">
               <span className="icon-Fornecedor">Fornecedores</span>

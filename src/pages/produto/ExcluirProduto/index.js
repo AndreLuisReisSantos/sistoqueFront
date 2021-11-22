@@ -1,4 +1,6 @@
 import Botoes from "../../../components/Botoes";
+import { SelectProdutos } from "../../../components/SelectProduto"
+
 import { inputs, buscarProduto } from "./model";
 import { useState } from "react";
 import Swal from 'sweetalert2';
@@ -12,16 +14,6 @@ const ExcluirProduto = () => {
   ];
 
   const [inputsReact, setInputReact] = useState(inputs);
-
-  const mudarValueInput = (e, input) => {
-    const htmlInputs = e.target;
-    input.value = htmlInputs.value;
-    const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id === input.id) return input;
-      else return inputsReactAtual;
-    });
-    setInputReact(inputsAtualizados)
-  };
 
   const renderizarCamposReact = () =>
     inputsReact.map((inputAtual) => (
@@ -39,13 +31,9 @@ const ExcluirProduto = () => {
               value={inputAtual.value}
               disabled={inputAtual.disabled}
               className={inputAtual.classe}
-              onChange={(e) => {
-                mudarValueInput(e, inputAtual)
-              }}
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             />
-          ) :
-            inputAtual.type === "textarea"   ? (
+          ) : (
               <textarea 
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -55,27 +43,9 @@ const ExcluirProduto = () => {
               value={inputAtual.value}
               disabled={inputAtual.disabled}
               className={inputAtual.classe}
-              onChange={(e) => {
-                mudarValueInput(e, inputAtual)
-              }}
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             ></textarea>
             )
-          : (
-            <select
-              placeholder={inputAtual.placeholder}
-              name={inputAtual.name}
-              id={inputAtual.id}
-              required={inputAtual.required}
-              value={inputAtual.value}
-              disabled={inputAtual.disabled}
-              className={inputAtual.classe}
-              onChange={(e) => {mudarValueInput(e, inputAtual)}}
-              style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
-            > {
-              (inputAtual.options || []).map((option) => (<option value={option.value}> {option.text} </option>))
-            }</select>
-          )
         }
       </div>
     ));
@@ -88,33 +58,14 @@ const ExcluirProduto = () => {
       })
     }
 
-    const renderizarCamposBuscarProdutoReact = () =>
-      buscarProduto.map((BuscarProdutoAtual) => (
-        <div className="itemFormulario">
-          <label for={BuscarProdutoAtual.name}>{BuscarProdutoAtual.label}:</label>
-          <br />
-          <select
-            placeholder={BuscarProdutoAtual.placeholder}
-            name={BuscarProdutoAtual.name}
-            id={BuscarProdutoAtual.id}
-            required={BuscarProdutoAtual.required}
-            value={BuscarProdutoAtual.value}
-            className={BuscarProdutoAtual.classe}
-            disabled={BuscarProdutoAtual.disabled}
-  
-          />
-        </div>
-      ));
 
   return (
     <div className="Formulario">
       <h2>Editar Produto</h2>
       <fieldset>
-        {/*renderizarCampos()*/}
-        {renderizarCamposBuscarProdutoReact()}
+        <SelectProdutos onSelectProduto={console.log}></SelectProdutos>
       </fieldset>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
       <Botoes botoes={botoes} />

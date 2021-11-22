@@ -49,8 +49,7 @@ const CadastroProduto = () => {
               }}
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             />
-          ) :
-            inputAtual.type === "textarea"   ? (
+          ) : (
               <textarea 
               placeholder={inputAtual.placeholder}
               name={inputAtual.name}
@@ -66,21 +65,6 @@ const CadastroProduto = () => {
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             ></textarea>
             )
-          : (
-            <select
-              placeholder={inputAtual.placeholder}
-              name={inputAtual.name}
-              id={inputAtual.id}
-              required={inputAtual.required}
-              value={inputAtual.value}
-              disabled={inputAtual.disabled}
-              className={inputAtual.classe}
-              onChange={(e) => {mudarValueInput(e, inputAtual)}}
-              style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
-            > {
-              (inputAtual.options || []).map((option) => (<option value={option.value}> {option.text} </option>))
-            }</select>
-          )
         }
       </div>
     ));
@@ -97,30 +81,9 @@ const CadastroProduto = () => {
       setInputReact(validarCampos)
     }
 
-    const renderizarCamposBuscarProdutoReact = () =>
-      buscarProduto.map((BuscarProdutoAtual) => (
-        <div className="itemFormulario">
-          <label for={BuscarProdutoAtual.name}>{BuscarProdutoAtual.label}:</label>
-          <br />
-          <select
-            placeholder={BuscarProdutoAtual.placeholder}
-            name={BuscarProdutoAtual.name}
-            id={BuscarProdutoAtual.id}
-            required={BuscarProdutoAtual.required}
-            value={BuscarProdutoAtual.value}
-            className={BuscarProdutoAtual.classe}
-            disabled={BuscarProdutoAtual.disabled}
-  
-          />
-        </div>
-      ));
-
   return (
     <div className="Formulario">
       <h2>Cadastrar Produto</h2>
-      <fieldset>
-        {renderizarCamposBuscarProdutoReact()}
-      </fieldset>
       <fieldset>
         {renderizarCamposReact()}
       </fieldset>

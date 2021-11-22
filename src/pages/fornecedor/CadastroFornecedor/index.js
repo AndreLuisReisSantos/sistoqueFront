@@ -6,6 +6,7 @@ import { useState } from "react";
 import Swal from 'sweetalert2';
 import { useMutation } from "@apollo/client";
 import { AdicionarRepresentante } from "../../../components/AdicionarRepresentante";
+import { TODOS_FORNECEDORES } from './../../../components/SelectFornecedor/index';
 
 const CadastroFornecedor = () => {
   const botoes = [
@@ -25,7 +26,11 @@ const CadastroFornecedor = () => {
   const [inputsEnderecoReact, setInputEnderecoReact] = useState(inputsEndereco);
   const [inputsRepresentanteReact, setInputRepresentanteReact] = useState(inputsRepresentante);
   const [representante, setRepresentante] = useState(null);
-  const [criarFornecedor, { error }] = useMutation(CRIAR_FORNECEDOR)
+  const [criarFornecedor, { error }] = useMutation(CRIAR_FORNECEDOR, {
+    refetchQueries: [
+      { query: TODOS_FORNECEDORES}
+    ]
+  })
 
   
 

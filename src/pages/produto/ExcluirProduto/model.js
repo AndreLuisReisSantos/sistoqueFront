@@ -7,22 +7,23 @@ export const inputs = [
       value: "",
       type: "text",
       required: true,
-      classe: "input_tamanho5",
+      classe: "input_tamanho1",
       valid : true,
       disabled : true,
     },
-    {
-      name: "categoria",
-      id: "categoria",
-      label: "Categoria",
-      placeholder: "Selecione a Categoria",
-      value: "",
-      type: "select",
-      required: true,
-      classe: "input_tamanho3",
-      valid : true,
-      disabled : true,
-    },];
+    // {
+    //   name: "categoria",
+    //   id: "categoria",
+    //   label: "Categoria",
+    //   placeholder: "Selecione a Categoria",
+    //   value: "",
+    //   type: "select",
+    //   required: true,
+    //   classe: "input_tamanho3",
+    //   valid : true,
+    //   disabled : true,
+    // },
+  ];
 
 export const buscarProduto = [
     {

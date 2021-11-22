@@ -190,13 +190,17 @@ const buscarCep = async (cep) => {
           disabled: false,
         }))
       )
-  
+        console.log({ fornecedor })
       setFornecedorFields(
         fornecedorFields.map(
           (field) => ({
             ...field,
-            value: fornecedor[field.id] || '',
-            disabled: false,
+            value: field.name.includes('representante') ? 
+                field.name === "celular_representante" ? 
+                  fornecedor.Representante.celular : 
+                  fornecedor.Representante.nome
+              : (fornecedor[field.id] || ''),
+            disabled: field.name.includes('representante'),
           })))
       
     }
