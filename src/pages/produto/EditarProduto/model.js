@@ -13,8 +13,8 @@ export const inputs = [
     },
     
     {
-      name: "volume",
-      id: "volume",
+      name: "unidadeMedida",
+      id: "unidadeMedida",
       label: "Volume",
       placeholder: "Volume",
       value: "",
@@ -25,8 +25,8 @@ export const inputs = [
       disabled : true,
     },
     {
-      name: "descricaoProduto",
-      id: "descricaoProduto",
+      name: "descricao",
+      id: "descricao",
       label: "Descrição do Produto",
       placeholder: "Descrição do Produto",
       value: "",
@@ -36,18 +36,3 @@ export const inputs = [
       valid : true,
       disabled : true,
     },];
-
-export const buscarProduto = [
-    {
-      name: "BuscarProduto",
-      id: "BuscarProduto",
-      label: "Selecione um Produto",
-      placeholder: "Selecione um Produto",
-      value: "",
-      required: true,
-      classe: "input_tamanho1",
-      valid : true,
-      disabled : false,
-
-    },
-  ];

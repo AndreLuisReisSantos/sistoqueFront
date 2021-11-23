@@ -11,10 +11,9 @@ export const CRIAR_PRODUTO = gql`
 `
 
 export const EDITAR_PRODUTO = gql`
-    mutation EditarProduto($produtoId: Int!, $produto: EditarProduto!) {
-        editarProduto(produtoId: $produtoId, produto: $produto) {
+    mutation EditarProduto($produto: EditarProduto!, $produtoId: Int!) {
+        editarProduto(produto: $produto, produtoId: $produtoId) {
             id
-            nome
         }
     }
 

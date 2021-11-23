@@ -25,8 +25,8 @@ export const inputs = [
     //   options: []
     // },
     {
-      name: "volume",
-      id: "volume",
+      name: "unidadeMedida",
+      id: "unidadeMedida",
       label: "Volume",
       placeholder: "Volume",
       value: "",
@@ -49,8 +49,8 @@ export const inputs = [
     //   disabled : true,   
     // },
     {
-      name: "descricaoProduto",
-      id: "descricaoProduto",
+      name: "descricao",
+      id: "descricao",
       label: "Descrição do Produto",
       placeholder: "Descrição do Produto",
       value: "",

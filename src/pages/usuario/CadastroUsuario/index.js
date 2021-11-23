@@ -1,6 +1,10 @@
 import Botoes from "../../../components/Botoes";
+import { TODOS_USUARIO } from "../../../components/SelectUsuario"
+import { CRIAR_USUARIO } from "../../../mutation/usuario"
 import { inputs, inputsLogin } from "./model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
+import { useMutation } from '@apollo/client';
 
 const CadastroUsuario = () => {
   const botoes = [
@@ -8,12 +12,7 @@ const CadastroUsuario = () => {
       nome: "Cadastrar",
       classe: "botaoCadastrar",
       onClick: (e) => confirmarCamposReact(e),
-    } /*
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: () => excluirCampos(),
-  },*/,
+    },
     {
       nome: "Limpar",
       classe: "botaoLimpar",
@@ -21,21 +20,26 @@ const CadastroUsuario = () => {
     },
   ];
 
-const [inputsReact, setInputReact] = useState(inputs);
-const [inputsLoginReact, setInputLoginReact] = useState(inputsLogin);
+const [usuarioField, setUsuarioField] = useState(inputs);
+const [acessoField, setAcessoField] = useState(inputsLogin);
+const [criarUsuario, { data, error, loading }] = useMutation(CRIAR_USUARIO, {
+  refetchQueries: [{ 
+    query: TODOS_USUARIO
+  }]
+})
 
   const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
-    const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
-      if (inputsReactAtual.id === input.id) return input;
-      else return inputsReactAtual;
+    const inputsAtualizados = usuarioField.map((usuarioFieldAtual) => {
+      if (usuarioFieldAtual.id === input.id) return input;
+      else return usuarioFieldAtual;
     });
-    setInputReact(inputsAtualizados)
+    setUsuarioField(inputsAtualizados)
   };
 
   const renderizarCamposReact = () =>
-    inputsReact.map((inputAtual) => (
+    usuarioField.map((inputAtual) => (
       <div className="itemFormulario">
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
@@ -77,15 +81,15 @@ const [inputsLoginReact, setInputLoginReact] = useState(inputsLogin);
   const mudarValueInputLogin = (e, input) => {
       const htmlInputs = e.target;
       input.value = htmlInputs.value;
-      const inputsAtualizados = inputsLoginReact.map((inputsReactAtual) => {
-        if (inputsReactAtual.id === input.id) return input;
-        else return inputsReactAtual;
+      const inputsAtualizados = acessoField.map((usuarioFieldAtual) => {
+        if (usuarioFieldAtual.id === input.id) return input;
+        else return usuarioFieldAtual;
       });
-      setInputReact(inputsAtualizados)
+      setAcessoField(inputsAtualizados)
     };
 
   const renderizarCamposLoginReact = () =>
-    inputsLoginReact.map((inputLoginAtual) => (
+    acessoField.map((inputLoginAtual) => (
       <div className="itemFormulario">
         <label for={inputLoginAtual.name}>{inputLoginAtual.label}:</label>
         <br />
@@ -106,36 +110,89 @@ const [inputsLoginReact, setInputLoginReact] = useState(inputsLogin);
       </div>
     ));
 
-const limparCamposReact = (e) => {
-      e.preventDefault();
-      const camposAtualizados = inputsReact.map((input) => ({...input, value : ''}))
-      const camposinputsLoginReact = inputsLoginReact.map((input) => ({...input, value : ''}))
-      setInputReact(camposAtualizados)
-      setInputLoginReact(camposinputsLoginReact)
+const limparCamposReact = () => {
+      const camposAtualizados = usuarioField.map((input) => ({...input, value : ''}))
+      const camposacessoField = acessoField.map((input) => ({...input, value : ''}))
+      setUsuarioField(camposAtualizados)
+      setAcessoField(camposacessoField)
     }
 
-const confirmarCamposReact = (e) => {
+const confirmarCamposReact = async (e) => {
       e.preventDefault();
-      const validarCampos = inputsReact.map((input) => ({...input, valid : input.required ?  input.value !== '' : true}))
-      const camposinputsLoginReact = inputsLoginReact.map((input) => ({...input, valid : input.required ?  input.value !== '' : true}))
-      setInputReact(validarCampos)
-      setInputLoginReact(camposinputsLoginReact)
+      const validarCampos = usuarioField.map((input) => ({...input, valid : input.required ?  input.value !== '' : true}))
+      const camposacessoField = acessoField.map((input) => ({...input, valid : input.required ?  input.value !== '' : true}))
+      setUsuarioField(validarCampos)
+      setAcessoField(camposacessoField)
+      
+      if(acessoField[0].value !== acessoField[1].value) {
+        Swal.fire({
+          icon: "warning",
+          title: "Ops",
+          text: "As senhas não estão iguais"
+        })
+        return
+      }
 
+      const formatedData = usuarioField.reduce((formated, usuario) => ({
+        ...formated,
+        [usuario.name]: usuario.value,
+      }), {})
+      
+      formatedData.tipoUsuario = Number(formatedData.tipoUsuario)
+
+      if(formatedData.tipoUsuario === 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Ops",
+          text: "Selecione um cargo valido"
+        })
+        return 
+      }
+      try {
+        await criarUsuario({
+          variables: {
+            usuario: {
+              ...formatedData,
+              senha: acessoField[0].value
+            }
+          }
+        })
+
+        Swal.fire({
+          title: 'Parabens!',
+          text: 'Usuario cadastrado!',
+          icon: 'success'
+        })
+        limparCamposReact()
+
+      } catch( errors ) {
+        
+        return Swal.fire({
+          title: 'Ops!',
+          text: error ? error.message : errors.message || errors[0].message,
+          icon: 'error'
+        })
+      
+      }
     }
+
+  useEffect(() => {
+    setUsuarioField((old) => old.map((f) => ({ ...f, value: ""})))
+    setAcessoField((old) => old.map((f) => ({ ...f, value: ""})))
+
+  }, [])
 
   return (
     <div className="Formulario">
       <h2>Cadastrar novo Usuario</h2>
       <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
       <h3>
-        <span>Login</span>
+        <span>Acesso</span>
       </h3>
       <fieldset>
         {renderizarCamposLoginReact()}
-        {/*renderizarCamposLogin()*/}
       </fieldset>
       <Botoes botoes={botoes} />
     </div>

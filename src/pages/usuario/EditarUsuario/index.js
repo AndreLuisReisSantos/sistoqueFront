@@ -1,28 +1,20 @@
 import Botoes from "../../../components/Botoes";
-import { inputs, inputsLogin, buscarUsuario } from "./model";
+import { SelectUsuario, TODOS_USUARIO } from '../../../components/SelectUsuario'
+import { EDITAR_USUARIO } from "../../../mutation/usuario"
+import { inputs, inputsLogin } from "./model";
+import Swal from 'sweetalert2'
 import { useState } from "react";
+import { useMutation } from "@apollo/client";
 
-const CadastroUsuario = () => {
-  const botoes = [
-    {
-      nome: "Cadastrar",
-      classe: "botaoCadastrar",
-      onClick: (e) => confirmarCamposReact(e),
-    } /*
-  {
-    nome:"Excluir",
-    classe:"botaoExcluir",
-    onClick: () => excluirCampos(),
-  },*/,
-    // {
-    //   nome: "Limpar",
-    //   classe: "botaoLimpar",
-    //   onClick: () => limparCamposReact(),
-    // },
-  ];
-
+const EditarUsuario = () => {
   const [inputsReact, setInputReact] = useState(inputs);
-
+  const [acessField, setAcessField] = useState(inputsLogin);
+  const [cpf, setCpf] = useState("")
+  const [editarUsuario, { data, error }] = useMutation(EDITAR_USUARIO, {
+    refetchQueries: [
+      { query: TODOS_USUARIO }
+    ]
+  })
   const mudarValueInput = (e, input) => {
     const htmlInputs = e.target;
     input.value = htmlInputs.value;
@@ -34,7 +26,7 @@ const CadastroUsuario = () => {
   };
 
   const renderizarCamposReact = () =>
-    inputs.map((inputAtual) => (
+    inputsReact.map((inputAtual) => (
       <div className="itemFormulario">
         <label for={inputAtual.name}>{inputAtual.label}:</label>
         <br />
@@ -66,7 +58,7 @@ const CadastroUsuario = () => {
               onChange={(e) => {mudarValueInput(e, inputAtual)}}
               style={{ border: !inputAtual.valid ? '1px solid red' : '', backgroundColor:!inputAtual.valid ? '#FFC0CB' : ''}}
             > {
-              inputAtual.options.map((option) => (<option value={option.value}> {option.text} </option>))
+              inputAtual.options.map((option) => (<option selected={option.selected} value={option.value}> {option.text} </option>))
             }</select>
           )
         }
@@ -76,15 +68,15 @@ const CadastroUsuario = () => {
   const mudarValueInputLogin = (e, input) => {
       const htmlInputs = e.target;
       input.value = htmlInputs.value;
-      const inputsAtualizados = inputsReact.map((inputsReactAtual) => {
+      const inputsAtualizados = acessField.map((inputsReactAtual) => {
         if (inputsReactAtual.id === input.id) return input;
         else return inputsReactAtual;
       });
-      setInputReact(inputsAtualizados)
+      setAcessField(inputsAtualizados)
     };
 
   const renderizarCamposLoginReact = () =>
-    inputsLogin.map((inputLoginAtual) => (
+    acessField.map((inputLoginAtual) => (
       <div className="itemFormulario">
         <label for={inputLoginAtual.name}>{inputLoginAtual.label}:</label>
         <br />
@@ -98,56 +90,146 @@ const CadastroUsuario = () => {
           disabled={inputLoginAtual.disabled}
           className={inputLoginAtual.classe}
           onChange={(e) => mudarValueInputLogin(e, inputLoginAtual)}
-
         />
       </div>
     ));
 
-    const confirmarCamposReact = (e) => {
-      e.preventDefault();
-      const validarCampos = inputsReact.map((input) => ({...input, value : input.valid !== ''}))
+    const confirmarCamposReact = async () => {
+      const validarCampos = inputsReact.map((input) => ({...input, valid : input.value !== ''}))
       setInputReact(validarCampos)
+
+      const formatedData = inputsReact.reduce((formated, usuario) => ({
+        ...formated,
+        [usuario.name]: usuario.value,
+      }), {})
+      
+      formatedData.tipoUsuario = Number(formatedData.tipoUsuario)
+
+      if(formatedData.tipoUsuario == 0) {
+        return  Swal.fire({
+          icon: "warning",
+          title: "Ops",
+          text: "Selecione um cargo valido"
+        })
+      }
+      const cpfId = formatedData.cpf
+      try {
+        await editarUsuario({
+          variables: {
+            usuario: {
+              ...formatedData
+            },
+            usuarioId: cpfId
+          }
+        })
+        Swal.fire({
+          title: 'Parabens!',
+          text: 'Usuario atualizado!',
+          icon: 'success'
+        })
+
+      } catch( errors ) {
+        
+        return Swal.fire({
+          title: 'Ops!',
+          text: error ? error.message : errors.message || errors[0].message,
+          icon: 'error'
+        })
+      
+      }
+      
     }
 
-    const renderizarCamposBuscarUsuarioReact = () =>
-      buscarUsuario.map((BuscarUsuarioAtual) => (
-        <div className="itemFormulario">
-          <label for={BuscarUsuarioAtual.name}>{BuscarUsuarioAtual.label}:</label>
-          <br />
-          <select
-            placeholder={BuscarUsuarioAtual.placeholder}
-            name={BuscarUsuarioAtual.name}
-            id={BuscarUsuarioAtual.id}
-            required={BuscarUsuarioAtual.required}
-            value={BuscarUsuarioAtual.value}
-            className={BuscarUsuarioAtual.classe}
-            disabled={BuscarUsuarioAtual.disabled}
+  const resetSenha = async () => {
+
+    if(acessField[0].value !== acessField[1].value) {
+      Swal.fire({
+        icon: "warning",
+        title: "Ops",
+        text: "As senhas não estão iguais"
+      })
+      return 
+    }
+
+    try {
+      await editarUsuario({
+        variables: {
+          usuario: {
+            senha: acessField[0].value
+          },
+          usuarioId: cpf
+        }
+      })
+      Swal.fire({
+        title: 'Parabens!',
+        text: 'Senha alterada!',
+        icon: 'success'
+      })
+      setAcessField(
+        acessField.map((input) => ({ ...input, value: ""}))
+      )
+    } catch( errors ) {
+      
+      return Swal.fire({
+        title: 'Ops!',
+        text: error ? error.message : errors.message || errors[0].message,
+        icon: 'error'
+      })
+    
+    }
+  }
+
+  const format = (date) => 
+    `${date.getFullYear()}-${date.getMonth() + 1 < 9 ?  `0${date.getMonth() + 1}` : date.getMonth() + 1}-${date.getDate() + 1 < 9 ?  `0${date.getDate() + 1}` : date.getDate() + 1}`
   
-          />
-        </div>
-      ));
+  const setInfo = (usuario) => {
+    const formatedUser = {
+      ...usuario,
+      dataNascimento: format(new Date(usuario.dataNascimento))
+    }
+    setCpf(usuario.cpf)
+    setInputReact(
+      inputsReact.map((input) => ({
+        ...input,
+        value: input.name == "tipoUsuario" ? usuario.tipoUsuario.id  : formatedUser[input.name] || "",
+        disabled: false,
+        options:  input.name == "tipoUsuario" ? input.options.map(option => ({ 
+          ...option,
+          selected: option.value == usuario.tipoUsuario.id
+        })) : []
+      }))
+    )
+    setAcessField(
+      acessField.map((input) => ({ ...input, disabled: false}))
+    )
+  }
 
   return (
     <div className="Formulario">
       <h2>Editar Usuario</h2>
+      <SelectUsuario onSelectUsuario={setInfo}/>
       <fieldset>
-        {/*renderizarCampos()*/}
-        {renderizarCamposBuscarUsuarioReact()}
-      </fieldset>
-      <fieldset>
-        {/*renderizarCampos()*/}
         {renderizarCamposReact()}
       </fieldset>
+      <Botoes botoes={[{
+          nome: "Editar",
+          classe: "botaoCadastrar",
+          onClick: () => confirmarCamposReact(),
+        }]} />
       <h3>
-        <span>Login</span>
+        <span>Alteração de senha</span>
       </h3>
       <fieldset>
         {renderizarCamposLoginReact()}
-        {/*renderizarCamposLogin()*/}
       </fieldset>
-      <Botoes botoes={botoes} />
+      <Botoes botoes={[{
+          nome: "Alterar Senha",
+          classe: "botaoExcluir",
+          onClick: () => resetSenha(),
+        }]} />
+      
     </div>
   );
 };
 
-export default CadastroUsuario;
+export default EditarUsuario;

@@ -12,12 +12,12 @@ export const inputs = [
       disabled : true,
     },
     {
-      name: "cargo",
-      id: "cargo",
+      name: "tipoUsuario",
+      id: "tipoUsuario",
       label: "Cargo",
       placeholder: "Digite o Cargo",
       value: "",
-      type: "select",
+      type: "text",
       required: true,
       classe: "input_tamanho3",
       valid : true,
@@ -54,8 +54,8 @@ export const inputs = [
       disabled : true,
     },
     {
-      name: "CPF",
-      id: "CPF",
+      name: "cpf",
+      id: "cpf",
       label: "CPF",
       placeholder: "CPF",
       value: "",
@@ -78,19 +78,3 @@ export const inputs = [
       disabled : true,
     },];
 
-
-  export const buscarUsuario = [
-    {
-      name: "BuscarUsuario",
-      id: "BuscarUsuario",
-      label: "Selecione um Usuario",
-      placeholder: "Selecione um Usuario",
-      value: "",
-      required: true,
-      tamanho: 120,
-      valid : true,
-      disabled : false,
-      classe: "input_tamanho1",
-
-    },
-  ];

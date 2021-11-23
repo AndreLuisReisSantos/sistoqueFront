@@ -41,11 +41,18 @@ const renderizarCamposReact = () =>
       </div>
     ));
 
-  
+    const setInfo = (produto) => {
+      setInputReact((old) => old.map((input) => ({
+        ...input,
+        value: produto[input.name] || "",
+      })))
+
+    }
+
   return (
     <div className="Formulario">
       <fieldset>
-        <SelectProdutos onSelectProduto={console.log}></SelectProdutos>
+        <SelectProdutos onSelectProduto={setInfo}></SelectProdutos>
       </fieldset>
       <fieldset>
         {renderizarCamposReact()}

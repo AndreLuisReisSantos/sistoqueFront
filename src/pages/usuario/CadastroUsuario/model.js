@@ -7,36 +7,36 @@ export const inputs = [
       value: "",
       type: "text",
       required: true,
-      classe: "input_tamanho5",
+      classe: "input_tamanho1",
       valid : true,
       disabled : false,
     },
     {
-      name: "cargo",
+      name: "tipoUsuario",
       id: "cargo",
       label: "Cargo",
       placeholder: "Digite o Cargo",
       value: "",
       type: "select",
       required: true,
-      classe: "input_tamanho3",
+      classe: "input_tamanho2",
       valid : true,
       disabled : false,
       options: [
         {
-          value: "-",
+          value: "0",
           text: "Selecione um cargo"
         },
         {
-          value: "funcionario",
+          value: "1",
           text: "Funcionário"
         },
         {
-          value: "cozinheiro",
+          value: "2",
           text: "Cozinheiro"
         },
         {
-          value: "gestor",
+          value: "3",
           text: "Gestor"
         },
       ]
@@ -49,12 +49,12 @@ export const inputs = [
       value: "",
       type: "date",
       required: true,
-      classe: "input_tamanho3",
+      classe: "input_tamanho2",
       valid : true,
       disabled : false,
     },
     {
-      name: "CPF",
+      name: "cpf",
       id: "CPF",
       label: "CPF",
       placeholder: "CPF",
@@ -66,7 +66,7 @@ export const inputs = [
       disabled : false,
     },
     {
-      name: "RG",
+      name: "rg",
       id: "RG",
       label: "RG",
       placeholder: "RG",
@@ -92,19 +92,6 @@ export const inputs = [
 
 export const inputsLogin = [
     {
-      name: "login",
-      id: "login",
-      label: "Login",
-      placeholder: "Login",
-      value: "",
-      type: "text",
-      required: true,
-      classe: "input_tamanho2",
-      valid : true,
-      disabled : false,
-
-    },
-    {
       name: "senha",
       id: "senha",
       label: "Senha",
@@ -117,5 +104,17 @@ export const inputsLogin = [
       disabled : false,
 
     },
-    
+    {
+      name: "conf_senha",
+      id: "conf_senha",
+      label: "Confirme a senha",
+      placeholder: "Confirme a senha",
+      value: "",
+      type: "password",
+      required: true,
+      classe: "input_tamanho2",
+      valid : true,
+      disabled : false,
+
+    },
   ];

@@ -2,7 +2,7 @@ import Botoes from "../../../components/Botoes";
 import { SelectRepresentante } from '../../../components/SelectRepresentante'
 import { CRIAR_FORNECEDOR } from '../../../mutation/criarFornecedor'
 import { inputs, inputsEndereco, inputsRepresentante } from "./model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from 'sweetalert2';
 import { useMutation } from "@apollo/client";
 import { AdicionarRepresentante } from "../../../components/AdicionarRepresentante";
@@ -203,6 +203,8 @@ const CadastroFornecedor = () => {
       
       }
     }
+
+
 
   return (
     <div className="Formulario">
