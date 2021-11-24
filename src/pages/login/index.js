@@ -21,8 +21,34 @@ export const Login = () => {
               })
             return 
         }
-        
-        history.push('/sistema');
+
+        fetch('https://kokimbos-backend.herokuapp.com/users/authenticate', {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                login: email,
+                senha: password
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.token) {
+                localStorage.setItem('token', data.token);
+                history.push('/sistema');
+            }
+            else {
+                Swal.fire({
+                    title: 'Erro',
+                    text: 'Login e/ou senha inválidos!',
+                    icon: 'error'
+                });
+                document.querySelector("#txt_email").value = "";
+                const password = document.querySelector("#txt_password").value = "";
+            }
+        });
     }
 
     return (

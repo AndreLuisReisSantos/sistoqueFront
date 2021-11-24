@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom'
 const MenuPrincipal = () => {
+  function sair() {
+    localStorage.clear();
+  }
+  
   return (
     <div id="menu">
       <div>
@@ -43,7 +47,7 @@ const MenuPrincipal = () => {
       <ul className="menuSair">
         <li>
           <Link to="/login">
-          <span className="icon-sair">Sair</span>
+          <span className="icon-sair" onClick={sair}>Sair</span>
           </Link>
         </li>
       </ul>
